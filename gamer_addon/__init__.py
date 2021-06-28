@@ -10,8 +10,7 @@ bl_info = {
     "description": "GAMer: Geometry-preserving Adaptive Mesher",
     "author": "Zeyun Yu, Michael Holst, Johan Hake, and Tom Bartol",
     "version": (0,1,0),
-    "blender": (2, 7, 5),
-    "api": 55057,
+    "blender": (2, 93, 0),
     "location": "View3D > Add > Mesh",
     "warning": "",
     "wiki_url": "http://www.fetk.org/codes/gamer",
@@ -71,7 +70,9 @@ def remove_handler ( handler_list, handler_function ):
 
 def register():
     print("Registering GAMer...")
-    bpy.utils.register_module(__name__)
+    gamer_gui.register()
+    boundary_markers.register()
+    tetrahedralization.register()
 
     bpy.types.Scene.gamer = bpy.props.PointerProperty(
         type=gamer_gui.GAMerPropertyGroup)
@@ -91,7 +92,10 @@ def register():
 def unregister():
     remove_handler ( bpy.app.handlers.load_post, boundary_markers.boundary_markers_load_post )
     remove_handler ( bpy.app.handlers.load_post, gamer_gui.gamer_load_post )
-    bpy.utils.unregister_module(__name__)
+
+    gamer_gui.unregister()
+    boundary_markers.unregister()
+    tetrahedralization.unregister()
   
     print("GAMer unregistered")
 
