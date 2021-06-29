@@ -270,7 +270,7 @@ class GAMerMainPanelPropertyGroup(bpy.types.PropertyGroup):
 
 
 class GAMER_PT_main_panel(bpy.types.Panel):
-    bl_label = "GAMer: Geometry-preserving Adaptive Mesher"
+    bl_label = "GAMer1: Geometry-preserving Adaptive Mesher"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "GAMer1"
