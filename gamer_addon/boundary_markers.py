@@ -4,21 +4,12 @@ from bpy.props import BoolProperty, CollectionProperty, EnumProperty, \
     PointerProperty, StringProperty, BoolVectorProperty
 from bpy.app.handlers import persistent
 import mathutils
-import gamer
+from . import pygamer1 as gamer
 
 # python imports
 import os
 import re
 import numpy as np
-
-
-# we use per module class registration/unregistration
-def register():
-    bpy.utils.register_module(__name__)
-
-
-def unregister():
-    bpy.utils.unregister_module(__name__)
 
 
 @persistent
@@ -163,15 +154,15 @@ def boundary_marker_update(self, context):
 # Gamer Property Classes for Boundaries
 
 class GAMerBoundaryMaterialPropertyGroup(bpy.types.PropertyGroup):
-    boundary_id = StringProperty(name="Unique ID of This Boundary",default="")
+    boundary_id: StringProperty(name="Unique ID of This Boundary",default="")
 
 class GAMerBoundaryMarkersPropertyGroup(bpy.types.PropertyGroup):
-    name = StringProperty(
+    name: StringProperty(
         name="Boundary Name", default="Boundary", update=boundary_name_update)
-    boundary_id = StringProperty(name="Unique ID of This Boundary",default="")
-    marker = IntProperty(name="Marker Value", default = 1, update=boundary_marker_update)
-#    color = FloatVectorProperty ( name="Boundary Color", min=0.0, max=1.0, default=(0.5,0.5,0.5), subtype='COLOR', description='Boundary Color')
-    status = StringProperty(name="Status")
+    boundary_id: StringProperty(name="Unique ID of This Boundary",default="")
+    marker: IntProperty(name="Marker Value", default = 1, update=boundary_marker_update)
+#    color: FloatVectorProperty ( name="Boundary Color", min=0.0, max=1.0, default=(0.5,0.5,0.5), subtype='COLOR', description='Boundary Color')
+    status: StringProperty(name="Status")
 
 
     def check_boundary_name(self, bnd_name_list):
@@ -457,12 +448,12 @@ class GAMerBoundaryMarkersPropertyGroup(bpy.types.PropertyGroup):
 
 
 class GAMerBoundaryMarkersListPropertyGroup(bpy.types.PropertyGroup):
-    boundary_list = CollectionProperty(
+    boundary_list: CollectionProperty(
         type=GAMerBoundaryMarkersPropertyGroup, name="Boundary List")
-    active_bnd_index = IntProperty(name="Active Boundary Index", default=0)
-    include = BoolProperty(name="Include Domain in Model", default=False)
+    active_bnd_index: IntProperty(name="Active Boundary Index", default=0)
+    include: BoolProperty(name="Include Domain in Model", default=False)
 
-    get_boundary_info = BoolProperty(
+    get_boundary_info: BoolProperty(
         name="Toggle to enable/disable boundary_info", default=False)
 
 
@@ -708,4 +699,27 @@ class GAMerBoundaryMarkersListPropertyGroup(bpy.types.PropertyGroup):
 #                             emboss=False)
 
 
+
+
+classes = ( 
+            GAMER_OT_add_boundary,
+            GAMER_OT_remove_boundary,
+            GAMER_OT_remove_all_boundaries,
+            GAMER_OT_assign_boundary_faces,
+            GAMER_OT_remove_boundary_faces,
+            GAMER_OT_select_boundary_faces,
+            GAMER_OT_deselect_boundary_faces,
+            GAMER_UL_check_boundary,
+            GAMerBoundaryMaterialPropertyGroup,
+            GAMerBoundaryMarkersPropertyGroup,
+            GAMerBoundaryMarkersListPropertyGroup,
+          )
+
+def register():
+    for cls in classes:
+      bpy.utils.register_class(cls)
+
+def unregister():
+    for cls in reversed(classes):
+      bpy.utils.unregister_class(cls)
 

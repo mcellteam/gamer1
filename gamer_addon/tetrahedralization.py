@@ -5,21 +5,12 @@ from bpy.props import BoolProperty, CollectionProperty, EnumProperty, \
     FloatProperty, FloatVectorProperty, IntProperty, IntVectorProperty, \
     PointerProperty, StringProperty, BoolVectorProperty
 import mathutils
-import gamer
+from . import pygamer1 as gamer
 import gamer_addon.gamer_gui
 
 # python imports
 import os
 import numpy as np
-
-
-# we use per module class registration/unregistration
-def register():
-    bpy.utils.register_module(__name__)
-
-
-def unregister():
-    bpy.utils.unregister_module(__name__)
 
 
 # Tetrahedralization Operators:
@@ -30,7 +21,7 @@ class GAMER_OT_set_tet_path(bpy.types.Operator):
     bl_description = ("Set Tetrahedralization Path")
     bl_options = {'REGISTER'}
 
-    filepath = bpy.props.StringProperty(subtype='FILE_PATH', default="")
+    filepath: StringProperty(subtype='FILE_PATH', default="")
 
     def execute(self, context):
         context.scene.gamer.tet_group.tet_path = self.filepath
@@ -103,13 +94,13 @@ class GAMER_OT_tetrahedralize(bpy.types.Operator):
 
 
 class GAMerTetDomainPropertyGroup(bpy.types.PropertyGroup):
-    # name = StringProperty()  # This is a reminder that "name" is already defined for all subclasses of PropertyGroup
-    domain_id = IntProperty ( name="ID", default=-1, description="Domain ID" )
-    object_name = StringProperty ( name="ObjName", default="", description="Object Name" )
-    marker = IntProperty ( name="Marker", default=-1, description="Domain Marker Integer" )
-    is_hole = BoolProperty ( name="Hole", default=False, description="Use this domain as a hole" )
-    constrain_vol  = BoolProperty ( name="Constrain Volume", default=False, description="Constrain Volume" )
-    vol_constraint = FloatProperty ( name="Vol Constraint", default=10.0, description="Volume Constraint" )
+    # name: StringProperty()  # This is a reminder that "name" is already defined for all subclasses of PropertyGroup
+    domain_id: IntProperty ( name="ID", default=-1, description="Domain ID" )
+    object_name: StringProperty ( name="ObjName", default="", description="Object Name" )
+    marker: IntProperty ( name="Marker", default=-1, description="Domain Marker Integer" )
+    is_hole: BoolProperty ( name="Hole", default=False, description="Use this domain as a hole" )
+    constrain_vol : BoolProperty ( name="Constrain Volume", default=False, description="Constrain Volume" )
+    vol_constraint: FloatProperty ( name="Vol Constraint", default=10.0, description="Volume Constraint" )
     
     def draw_layout ( self, layout ):
         row = layout.row()
@@ -168,29 +159,29 @@ def check_formats_callback(self, context):
 
 class GAMerTetrahedralizationPropertyGroup(bpy.types.PropertyGroup):
 
-  tet_path = StringProperty ( name="tet_path", default="", description="Path and file prefix for tetrahedralization output files" )
+  tet_path: StringProperty ( name="tet_path", default="", description="Path and file prefix for tetrahedralization output files" )
 
-  generic_float = FloatProperty( name="Generic Float", default=123.456, min=0.0, max=1000, precision=4, description="A Generic Float Value")
-  generic_int = IntProperty( name="Generic Int", default=5, min=1, max=10, description="A Generic Int Value")
-  generic_boolean = BoolProperty( name="Generic Bool", default=False, description="A Generic Boolean Value")
+  generic_float: FloatProperty( name="Generic Float", default=123.456, min=0.0, max=1000, precision=4, description="A Generic Float Value")
+  generic_int: IntProperty( name="Generic Int", default=5, min=1, max=10, description="A Generic Int Value")
+  generic_boolean: BoolProperty( name="Generic Bool", default=False, description="A Generic Boolean Value")
 
-  domain_list = CollectionProperty(type=GAMerTetDomainPropertyGroup, name="Domain List")
-  active_domain_index = IntProperty(name="Active Domain Index", default=0)
-  next_id = IntProperty(name="Counter for Unique Domain IDs", default=1)  # Start ID's at 1 to confirm initialization
+  domain_list: CollectionProperty(type=GAMerTetDomainPropertyGroup, name="Domain List")
+  active_domain_index: IntProperty(name="Active Domain Index", default=0)
+  next_id: IntProperty(name="Counter for Unique Domain IDs", default=1)  # Start ID's at 1 to confirm initialization
 
-  show_settings = BoolProperty( name="Tetrahedralization Settings", default=False, description="Show more detailed settings")
+  show_settings: BoolProperty( name="Tetrahedralization Settings", default=False, description="Show more detailed settings")
 
-  min_dihedral = FloatProperty ( name="Min Dihedral", default=10.0, description="Minimum Dihedral in Degrees" )
-  max_aspect_ratio = FloatProperty ( name="Max Aspect Ratio", default=1.3, description="Maximum Aspect Ratio" )
+  min_dihedral: FloatProperty ( name="Min Dihedral", default=10.0, description="Minimum Dihedral in Degrees" )
+  max_aspect_ratio: FloatProperty ( name="Max Aspect Ratio", default=1.3, description="Maximum Aspect Ratio" )
 
-  ho_mesh = BoolProperty ( name="Higher order mesh generation", default=False, description="Higher order mesh generation" )
+  ho_mesh: BoolProperty ( name="Higher order mesh generation", default=False, description="Higher order mesh generation" )
 
-  dolfin = BoolProperty ( name="DOLFIN", default=False, description="Generate DOLFIN output", update=check_formats_callback )
-  diffpack = BoolProperty ( name="Diffpack", default=False, description="Generate Diffpack output", update=check_formats_callback )
-  carp = BoolProperty ( name="Carp", default=False, description="Generate Carp output", update=check_formats_callback )
-  fetk = BoolProperty ( name="FEtk", default=False, description="Generate FEtk output", update=check_formats_callback )
+  dolfin: BoolProperty ( name="DOLFIN", default=False, description="Generate DOLFIN output", update=check_formats_callback )
+  diffpack: BoolProperty ( name="Diffpack", default=False, description="Generate Diffpack output", update=check_formats_callback )
+  carp: BoolProperty ( name="Carp", default=False, description="Generate Carp output", update=check_formats_callback )
+  fetk: BoolProperty ( name="FEtk", default=False, description="Generate FEtk output", update=check_formats_callback )
   
-  status = StringProperty ( name="status", default="" )
+  status: StringProperty ( name="status", default="" )
 
   def check_formats_callback(self, context):
       if self.dolfin or self.diffpack or self.carp or self.fetk:
@@ -506,4 +497,25 @@ class GAMerTetrahedralizationPropertyGroup(bpy.types.PropertyGroup):
         self.waitingCursor(0)
 
 """
+
+
+classes = ( 
+            GAMER_OT_set_tet_path,
+            GAMER_OT_tet_domain_add,
+            GAMER_OT_tet_domain_remove,
+            GAMER_OT_tet_domain_remove_all,
+            GAMER_OT_generic_button,
+            GAMER_OT_tetrahedralize,
+            GAMerTetDomainPropertyGroup,
+            GAMer_UL_domain,
+            GAMerTetrahedralizationPropertyGroup,
+          )
+
+def register():
+    for cls in classes:
+      bpy.utils.register_class(cls)
+
+def unregister():
+    for cls in reversed(classes):
+      bpy.utils.unregister_class(cls)
 

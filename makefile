@@ -13,15 +13,16 @@ ifeq ($(UNAME), Linux)
 	INSTALL_DIR = ..
 else
 #	export PYTHON := /usr/local/bin/python3.5
-	export PYTHON := /opt/local/bin/python3.5
+	export PYTHON := /Library/Frameworks/Python.framework/Versions/3.9/bin/python3.9
 	export DYLD_LIBRARY_PATH := $(BUILD_DIR)/lib:$(DYLD_LIBRARY_PATH)
 #	LDFLAGS := -L/usr/local/Cellar/python3/3.5.2_3/Frameworks/Python.framework/Versions/3.5/lib
-	LDFLAGS := -L/opt/local/Library/Frameworks/Python.framework/Versions/3.5/lib
+#	LDFLAGS := -L/opt/local/Library/Frameworks/Python.framework/Versions/3.5/lib
+	LDFLAGS := -L/Library/Frameworks/Python.framework/Versions/3.9/lib
 	PYTHON_MODULE_BUILD_DIR = $(BUILD_DIR)/lib/python3.5/site-packages/gamer
 	INSTALL_DIR := ../
 endif
 
-PKG_DIR = ~/src/blender/blender-2.78-linux-glibc211-x86_64/2.78/
+PKG_DIR = /Applications/Blender.app/Contents/Resources/2.93
 
 all: maloc gamer gamer_swig gamer_tools
 

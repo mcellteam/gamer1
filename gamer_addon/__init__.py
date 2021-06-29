@@ -6,8 +6,8 @@ Created on Tue Apr 17 08:37:50 2012
 """
 
 bl_info = {
-    "name": "GAMer",
-    "description": "GAMer: Geometry-preserving Adaptive Mesher",
+    "name": "GAMer1: Geometry-preserving Adaptive Mesher",
+    "description": "GAMer1: Geometry-preserving Adaptive Mesher",
     "author": "Zeyun Yu, Michael Holst, Johan Hake, and Tom Bartol",
     "version": (0,1,0),
     "blender": (2, 93, 0),
@@ -70,9 +70,9 @@ def remove_handler ( handler_list, handler_function ):
 
 def register():
     print("Registering GAMer...")
-    gamer_gui.register()
     boundary_markers.register()
     tetrahedralization.register()
+    gamer_gui.register()
 
     bpy.types.Scene.gamer = bpy.props.PointerProperty(
         type=gamer_gui.GAMerPropertyGroup)

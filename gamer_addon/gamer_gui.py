@@ -4,7 +4,7 @@ from bpy.props import BoolProperty, CollectionProperty, EnumProperty, \
     PointerProperty, StringProperty, BoolVectorProperty
 from bpy.app.handlers import persistent
 import mathutils
-import gamer
+from . import pygamer1 as gamer
 
 from . import boundary_markers
 from . import tetrahedralization
@@ -13,17 +13,6 @@ from . import tetrahedralization
 import os
 import numpy as np
 
-
-# we use per module class registration/unregistration
-def register():
-    bpy.utils.register_module(__name__)
-
-
-def unregister():
-    bpy.utils.unregister_module(__name__)
-
-def myprint ( s ):
-    print ( s )
 
 
 @persistent
@@ -87,23 +76,23 @@ class GAMER_OT_normal_smooth(bpy.types.Operator):
 
 
 class GAMerMeshImprovementPropertyGroup(bpy.types.PropertyGroup):
-  dense_rate = FloatProperty(
+  dense_rate: FloatProperty(
       name="CD_Rate", default=2.5, min=0.001, max=4.0, precision=4,
       description="The rate for coarsening dense areas")
-  dense_iter = IntProperty(
+  dense_iter: IntProperty(
       name="CD_Iter", default=1, min=1, max=15,
       description="The number of iterations for coarsening dense areas")
-  flat_rate = FloatProperty(
+  flat_rate: FloatProperty(
       name="CF_Rate", default=0.016, min=0.00001, max=0.5, precision=4,
       description="The rate for coarsening flat areas")
-  max_min_angle = IntProperty(
+  max_min_angle: IntProperty(
       name="Max_Min_Angle", default=15, min=10, max=20,
       description="The maximal minumum angle for smoothing")
-  smooth_iter = IntProperty(
+  smooth_iter: IntProperty(
       name="S_Iter", default=6, min=1, max=50,
       description="The number of iterations for coarsening dense areas")
-  preserve_ridges = BoolProperty( name="Preserve ridges", default=False)
-  new_mesh = BoolProperty( name="Create new mesh", default=False)
+  preserve_ridges: BoolProperty( name="Preserve ridges", default=False)
+  new_mesh: BoolProperty( name="Create new mesh", default=False)
 
   def coarse_dense ( self, context):
       print("Calling coarse_dense")
@@ -170,11 +159,11 @@ class GAMerMeshImprovementPropertyGroup(bpy.types.PropertyGroup):
 
 
 class GAMerMainPanelPropertyGroup(bpy.types.PropertyGroup):
-    mesh_improve_select = BoolProperty ( name="mesh_improve_sel", description="Surface Mesh Improvement", default=False, subtype='NONE', update=panel_select_callback)
-    boundary_markers_select = BoolProperty ( name="boundary_markers_sel", description="Boundary Markers", default=False, subtype='NONE', update=panel_select_callback)
-    tet_select = BoolProperty ( name="tet_sel", description="Tetrahedralization", default=False, subtype='NONE', update=panel_select_callback)
-    select_multiple = BoolProperty ( name="select_multiple", description="Show Multiple Panels", default=False, subtype='NONE', update=panel_select_callback)
-    last_state = BoolVectorProperty ( size=22 ) # Keeps track of previous button state to detect transitions
+    mesh_improve_select: BoolProperty ( name="mesh_improve_sel", description="Surface Mesh Improvement", default=False, subtype='NONE', update=panel_select_callback)
+    boundary_markers_select: BoolProperty ( name="boundary_markers_sel", description="Boundary Markers", default=False, subtype='NONE', update=panel_select_callback)
+    tet_select: BoolProperty ( name="tet_sel", description="Tetrahedralization", default=False, subtype='NONE', update=panel_select_callback)
+    select_multiple: BoolProperty ( name="select_multiple", description="Show Multiple Panels", default=False, subtype='NONE', update=panel_select_callback)
+    last_state: BoolVectorProperty ( size=22 ) # Keeps track of previous button state to detect transitions
 
     def panel_select_callback ( self, context ):
         """
@@ -262,19 +251,19 @@ class GAMerMainPanelPropertyGroup(bpy.types.PropertyGroup):
 
         if self.mesh_improve_select:
             layout.box() # Use as a separator
-            layout.label ( "Surface Mesh Improvement", icon='MESH_ICOSPHERE' )
+            layout.label ( text="Surface Mesh Improvement", icon='MESH_ICOSPHERE' )
             context.scene.gamer.mesh_improve_panel.draw_layout ( context, layout )
 
         if self.boundary_markers_select:
             layout.box() # Use as a separator
-            layout.label ( "Boundary Marking", icon='TPAINT_HLT' )
+            layout.label ( text="Boundary Marking", icon='TPAINT_HLT' )
             active_obj = context.active_object
             if active_obj:
               active_obj.gamer.draw_layout ( context, layout )
 
         if self.tet_select:
             layout.box() # Use as a separator
-            layout.label ( "Tetrahedralization", icon='MOD_SKIN' )
+            layout.label ( text="Tetrahedralization", icon='MOD_SKIN' )
             context.scene.gamer.tet_group.draw_layout ( context, layout )
 
 
@@ -283,8 +272,8 @@ class GAMerMainPanelPropertyGroup(bpy.types.PropertyGroup):
 class GAMER_PT_main_panel(bpy.types.Panel):
     bl_label = "GAMer: Geometry-preserving Adaptive Mesher"
     bl_space_type = "VIEW_3D"
-    bl_region_type = "TOOLS"
-    bl_category = "GAMer"
+    bl_region_type = "UI"
+    bl_category = "GAMer1"
    
     @classmethod
     def poll(cls, context):
@@ -309,19 +298,19 @@ class GAMER_PT_main_panel(bpy.types.Panel):
 
 
 class GAMerPropertyGroup(bpy.types.PropertyGroup):
-  initialized = BoolProperty(name="GAMer Initialized", default=False)
-  gamer_version = StringProperty(name="GAMer Version", default="0")
-  boundary_id_counter = IntProperty(name="GAMer Boundary id Counter")
+  initialized: BoolProperty(name="GAMer Initialized", default=False)
+  gamer_version: StringProperty(name="GAMer Version", default="0")
+  boundary_id_counter: IntProperty(name="GAMer Boundary id Counter")
 
-  main_panel = PointerProperty(
+  main_panel: PointerProperty(
     type=GAMerMainPanelPropertyGroup,
     name="GAMer Main Panel")
 
-  mesh_improve_panel = PointerProperty(
+  mesh_improve_panel: PointerProperty(
     type=GAMerMeshImprovementPropertyGroup,
     name="GAMer Surface Mesh Improvement")
 
-  tet_group = PointerProperty(
+  tet_group: PointerProperty(
     type=tetrahedralization.GAMerTetrahedralizationPropertyGroup,
     name="GAMer Tetrahedralization")
 
@@ -636,4 +625,25 @@ def gamer_to_blender(gmesh, boundaries, create_new_mesh=False,
     
 #    self.waitingCursor(0)
 #    self.updateViewer()
+
+
+
+classes = ( 
+            GAMER_OT_coarse_dense,
+            GAMER_OT_coarse_flat,
+            GAMER_OT_smooth,
+            GAMER_OT_normal_smooth,
+            GAMerMeshImprovementPropertyGroup,
+            GAMerMainPanelPropertyGroup,
+            GAMER_PT_main_panel,
+            GAMerPropertyGroup,
+          )
+
+def register():
+    for cls in classes:
+      bpy.utils.register_class(cls)
+
+def unregister():
+    for cls in reversed(classes):
+      bpy.utils.unregister_class(cls)
 
