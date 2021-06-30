@@ -121,14 +121,14 @@ class GAMER_UL_check_boundary(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data,
                   active_propname, index):
         if item.status:
-            layout.label(item.status, icon='ERROR')
+            layout.label(text=item.status, icon='ERROR')
         else:
-            layout.label(item.name, icon='FILE_TICK')
+            layout.label(text=item.name, icon='CHECKMARK')
 
-        split = layout.split(percentage = 0.5)
+        split = layout.split(factor = 0.5)
         col = split.column()
 #        remainder = split.column()
-#        split = remainder.split(percentage = 0.2)
+#        split = remainder.split(factor = 0.2)
         col = split.column()
         mats = bpy.data.materials
         bnd_mat = [ mat for mat in mats if mat.gamer.boundary_id == item.boundary_id ][0]
@@ -639,7 +639,7 @@ class GAMerBoundaryMarkersListPropertyGroup(bpy.types.PropertyGroup):
 
         if active_obj and (active_obj.type == 'MESH'):
             row = layout.row()
-            row.label(text="Defined Boundaries:", icon='FACESEL_HLT')
+            row.label(text="Defined Boundaries:", icon='UV_DATA')
             row = layout.row()
             col = row.column()
             col.template_list("GAMER_UL_check_boundary", "boundary_list_1",
@@ -647,8 +647,8 @@ class GAMerBoundaryMarkersListPropertyGroup(bpy.types.PropertyGroup):
                           active_obj.gamer, "active_bnd_index",
                           rows=2)
             col = row.column(align=True)
-            col.operator("gamer.add_boundary", icon='ZOOMIN', text="")
-            col.operator("gamer.remove_boundary", icon='ZOOMOUT', text="")
+            col.operator("gamer.add_boundary", icon='ADD', text="")
+            col.operator("gamer.remove_boundary", icon='REMOVE', text="")
             col.operator("gamer.remove_all_boundaries", icon='X', text="")
 
             # Could have boundary item draw itself in new row here:

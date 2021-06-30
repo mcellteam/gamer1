@@ -121,7 +121,7 @@ class GAMerMeshImprovementPropertyGroup(bpy.types.PropertyGroup):
   def draw_layout ( self, context, layout ):
       row = layout.row()
       col = row.column()
-      col.operator("gamer.coarse_dense",icon="OUTLINER_OB_LATTICE")
+      col.operator("gamer.coarse_dense",icon="VIEW_PERSPECTIVE")
       col = row.column()
       col.prop(self, "dense_rate" )
       col = row.column()
@@ -240,7 +240,7 @@ class GAMerMainPanelPropertyGroup(bpy.types.PropertyGroup):
 
         brow = layout.row()
         bcol = brow.column()
-        bcol.prop ( self, "tet_select", icon='MOD_SKIN', text="Tetrahedralization" )
+        bcol.prop ( self, "tet_select", icon='MOD_MESHDEFORM', text="Tetrahedralization" )
         bcol = brow.column()
         if self.select_multiple:
             bcol.prop ( self, "select_multiple", icon='PINNED', text="Show All / Multiple" )
@@ -263,7 +263,7 @@ class GAMerMainPanelPropertyGroup(bpy.types.PropertyGroup):
 
         if self.tet_select:
             layout.box() # Use as a separator
-            layout.label ( text="Tetrahedralization", icon='MOD_SKIN' )
+            layout.label ( text="Tetrahedralization", icon='MOD_MESHDEFORM' )
             context.scene.gamer.tet_group.draw_layout ( context, layout )
 
 

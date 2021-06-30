@@ -118,17 +118,17 @@ class GAMerTetDomainPropertyGroup(bpy.types.PropertyGroup):
 
     def draw_item_in_row ( self, row ):
         col = row.column()
-        col.label ( str(self.object_name) )
+        col.label ( text=str(self.object_name) )
         col = row.column()
-        col.label ( "Domain ID: " + str(self.domain_id) )
+        col.label ( text="Domain ID: " + str(self.domain_id) )
         col = row.column()
         if self.is_hole:
-            col.label ( "Hole" )
+            col.label ( text="Hole" )
         else:
-            col.label ( "Domain Marker: " + str(self.marker) )
+            col.label ( text="Domain Marker: " + str(self.marker) )
 
 
-class GAMer_UL_domain(bpy.types.UIList):
+class GAMER_UL_domain(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         # The draw_item function is called for each item of the collection that is visible in the list.
         #   data is the RNA object containing the collection,
@@ -190,26 +190,26 @@ class GAMerTetrahedralizationPropertyGroup(bpy.types.PropertyGroup):
   def draw_layout ( self, context, layout ):
 
       row = layout.row()
-      row.label ( "Domains" )
+      row.label ( text="Domains" )
 
       row = layout.row()
       col = row.column()
 
-      col.template_list("GAMer_UL_domain", "",
+      col.template_list("GAMER_UL_domain", "",
                         self, "domain_list",
                         self, "active_domain_index",
                         rows=2)
 
       col = row.column(align=True)
-      col.operator("gamer.tet_domain_add", icon='ZOOMIN', text="")
-      col.operator("gamer.tet_domain_remove", icon='ZOOMOUT', text="")
+      col.operator("gamer.tet_domain_add", icon='ADD', text="")
+      col.operator("gamer.tet_domain_remove", icon='REMOVE', text="")
       col.operator("gamer.tet_domain_remove_all", icon='X', text="")
 
       if len(self.domain_list) > 0:
           domain = self.domain_list[self.active_domain_index]
 
           row = layout.row()
-          row.label ( "Active Index = " + str ( self.active_domain_index ) + ", ID = " + str ( domain.domain_id ) )
+          row.label ( text="Active Index = " + str ( self.active_domain_index ) + ", ID = " + str ( domain.domain_id ) )
           
           domain.draw_layout ( layout )
 
@@ -222,9 +222,9 @@ class GAMerTetrahedralizationPropertyGroup(bpy.types.PropertyGroup):
               row.prop(self, "show_settings", icon='TRIA_DOWN', emboss=False)
 
               row = box.row()
-              row.operator("gamer.set_tet_path", text="Set Output File Prefix", icon='FILESEL')
+              row.operator("gamer.set_tet_path", text="Set Output File Prefix", icon='FILEBROWSER')
               row = box.row()
-              row.label ( self.tet_path )
+              row.label ( text=self.tet_path )
 
               row = box.row()
               col = row.column()
@@ -236,7 +236,7 @@ class GAMerTetrahedralizationPropertyGroup(bpy.types.PropertyGroup):
               row.prop ( self, "ho_mesh" )
 
               row = box.row()
-              row.label ( "Output Formats:" )
+              row.label ( text="Output Formats:" )
 
               row = box.row()
               sbox = row.box()
@@ -260,7 +260,7 @@ class GAMerTetrahedralizationPropertyGroup(bpy.types.PropertyGroup):
           row.operator ( "gamer.tetrahedralize", text="Tetrahedralize", icon=icon )
           if len(self.status) > 0:
               row = layout.row()
-              row.label ( self.status, icon="ERROR" )
+              row.label ( text=self.status, icon="ERROR" )
 
 
   def add_tet_domain ( self, context):
@@ -506,8 +506,8 @@ classes = (
             GAMER_OT_tet_domain_remove_all,
             GAMER_OT_generic_button,
             GAMER_OT_tetrahedralize,
+            GAMER_UL_domain,
             GAMerTetDomainPropertyGroup,
-            GAMer_UL_domain,
             GAMerTetrahedralizationPropertyGroup,
           )
 
