@@ -30,10 +30,10 @@
  * ***************************************************************************
  */
 
-#include <gamer/biom.h>
-#include "gamercf.h"
 #include <vector>
 #include <cmath>
+#include <gamer/biom.h>
+#include "gamercf.h"
 
 typedef struct {
   float x;       // vertex coordinate

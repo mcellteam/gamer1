@@ -30,7 +30,7 @@
  * ***************************************************************************
  */
 
-
+#include <algorithm>
 #include <gamer/biom.h>
 #include "gamercf.h"
 
@@ -341,7 +341,7 @@ void Marching(void)
   
 
   /* ============================ */
-  tempt_x=max(min_x-1,0);
+  tempt_x=std::max(min_x-1,0);
   tempt_y=min_y;
   tempt_z=min_z;
   if (heap_pointer[IndexVect1(tempt_x,tempt_y,tempt_z)] == MaxVal) {
@@ -373,7 +373,7 @@ void Marching(void)
       
   
   /* ============================ */
-  tempt_x=min(min_x+1,xdim1-1);
+  tempt_x=std::min(min_x+1,xdim1-1);
   tempt_y=min_y;
   tempt_z=min_z;
   if (heap_pointer[IndexVect1(tempt_x,tempt_y,tempt_z)] == MaxVal) {
@@ -404,7 +404,7 @@ void Marching(void)
   
 
   /* ============================ */
-  tempt_y=max(min_y-1,0);
+  tempt_y=std::max(min_y-1,0);
   tempt_x=min_x;
   tempt_z=min_z;
   if (heap_pointer[IndexVect1(tempt_x,tempt_y,tempt_z)] == MaxVal) {
@@ -435,7 +435,7 @@ void Marching(void)
 
 
   /* ============================ */
-  tempt_y=min(min_y+1,ydim1-1);
+  tempt_y=std::min(min_y+1,ydim1-1);
   tempt_x=min_x;
   tempt_z=min_z;
   if (heap_pointer[IndexVect1(tempt_x,tempt_y,tempt_z)] == MaxVal) {
@@ -466,7 +466,7 @@ void Marching(void)
 
 
   /* ============================ */
-  tempt_z=max(min_z-1,0);
+  tempt_z=std::max(min_z-1,0);
   tempt_x=min_x;
   tempt_y=min_y;
   if (heap_pointer[IndexVect1(tempt_x,tempt_y,tempt_z)] == MaxVal) {
@@ -497,7 +497,7 @@ void Marching(void)
 
 
   /* ============================ */
-  tempt_z=min(min_z+1,zdim1-1);
+  tempt_z=std::min(min_z+1,zdim1-1);
   tempt_x=min_x;
   tempt_y=min_y;
   if (heap_pointer[IndexVect1(tempt_x,tempt_y,tempt_z)] == MaxVal) {

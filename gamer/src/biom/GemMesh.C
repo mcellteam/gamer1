@@ -28,10 +28,10 @@
  * ****************************************************************************
  */
 
+#include <vector>
 #include <gamer/biom.h>
 #include <gamer/tetgen.h>
 #include "gamercf.h"
-#include <vector>
 
 // Declare internal GAMer methods
 FLTVECT GetCrossProduct(SurfaceMesh *, int, int, int);

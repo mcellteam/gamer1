@@ -5,34 +5,38 @@ export FETK_LIBRARY := $(BUILD_DIR)/lib
 
 UNAME := $(shell uname)
 
+CPPFLAGS := -std=c++11
+
 ifeq ($(UNAME), Linux)
-	export PYTHON := /usr/bin/python3.4
+	export PYTHON := /usr/bin/python3.9
 	export LD_LIBRARY_PATH := $(BUILD_DIR)/lib:$(LD_LIBRARY_PATH)
 	LDFLAGS = "-L/usr/local/lib/"
-	PYTHON_MODULE_BUILD_DIR = $(BUILD_DIR)/lib/python3.4/site-packages/gamer
+	PYTHON_MODULE_BUILD_DIR = $(BUILD_DIR)/lib/python3.9/site-packages/gamer
 	INSTALL_DIR = ..
+	PKG_DIR = /Applications/Blender.app/Contents/Resources/2.93  # fixme
 else
+	# macos
 #	export PYTHON := /usr/local/bin/python3.5
 	export PYTHON := /Library/Frameworks/Python.framework/Versions/3.9/bin/python3.9
 	export DYLD_LIBRARY_PATH := $(BUILD_DIR)/lib:$(DYLD_LIBRARY_PATH)
 #	LDFLAGS := -L/usr/local/Cellar/python3/3.5.2_3/Frameworks/Python.framework/Versions/3.5/lib
 #	LDFLAGS := -L/opt/local/Library/Frameworks/Python.framework/Versions/3.5/lib
 	LDFLAGS := -L/Library/Frameworks/Python.framework/Versions/3.9/lib
-	PYTHON_MODULE_BUILD_DIR = $(BUILD_DIR)/lib/python3.5/site-packages/gamer
+	PYTHON_MODULE_BUILD_DIR = $(BUILD_DIR)/lib/python3.9/site-packages/gamer
 	INSTALL_DIR := ../
+	PKG_DIR = /Applications/Blender.app/Contents/Resources/2.93
 endif
 
-PKG_DIR = /Applications/Blender.app/Contents/Resources/2.93
 
 all: maloc gamer gamer_swig gamer_tools
 
 .PHONY: maloc gamer gamer_swig upy
 
 maloc:
-	@ cd maloc ; ./configure --enable-static --prefix=$(BUILD_DIR) ; $(MAKE) ; $(MAKE) install
+	@ cd maloc ; CPPFLAGS=-std=c++11 ./configure --enable-static --prefix=$(BUILD_DIR) ; $(MAKE) ; $(MAKE) install
 
 gamer: maloc
-	@ cd gamer ; ./configure --enable-static --prefix=$(BUILD_DIR) ; $(MAKE) ; $(MAKE) install
+	@ cd gamer ; CPPFLAGS=-std=c++11 ./configure --enable-static --prefix=$(BUILD_DIR) ; $(MAKE) ; $(MAKE) install
 
 gamer_swig: gamer
 	echo "LDFLAGS is set to:  " $(LDFLAGS)
